@@ -3,7 +3,8 @@ An attempt at a text adventure game, using Discord as the GUI.
 
 ## Project requirements
 * JDK 17 (Gradle toolchain is setup to provide one if it cannot be found)
-* A discord application to integrate against
+* A Discord application to integrate against
+* A Discord guild to test the bot on
 
 ## Project layout
 
@@ -17,7 +18,9 @@ In the datastore module you'll find all the logic about persisting data.
 In the engine module you'll find all the game engine, which is decoupled from the game UI as much as possible.
 
 ### Bot
-In the bot module you'll find all the integrations with Discord from setting up the game to handling user interactions. 
+In the bot module you'll find all the integrations with Discord from setting up the game to handling user interactions.
+* https://github.com/kordlib/kord
+* https://github.com/kordlib/kordx.emoji
 
 ## Project configuring
 For the most part the only extra configuration required will be the secrets that manage the Discord integration.
@@ -28,9 +31,6 @@ These can be managed within say IntelliJ IDEA by using the EnvFile plugin and a 
 
 ### Required (to start application)
 ```
-# The application id for the Discord application you want to run this under.
-APPLICATION_ID=123
-
 # The bot token for the Discord application you want to run this under.
 TOKEN=abc-123
 ```
@@ -45,14 +45,24 @@ LOGGING_LEVEL=TRACE
 ### Discord permissions
 To use this integration with a Discord application (integration), it will need the following permissions.
 
+```
+https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=0&scope=bot
+```
+
 #### Privileged Gateway Intents:
-* Message Content Intent
+* None, for now
+
+#### Scopes:
+* bot
 
 #### General Permissions:
-* Read Messages / View Channels
+* None, for now
 
 #### Text Permissions:
-* Send Messages
+* None, for now
+
+#### Voice Permissions:
+* None, for now
 
 ## Running the project
 For now to run the project, you'll be starting the Discord bot.

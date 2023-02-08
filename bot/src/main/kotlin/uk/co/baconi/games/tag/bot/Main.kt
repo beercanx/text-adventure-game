@@ -1,5 +1,5 @@
 package uk.co.baconi.games.tag.bot
 
-fun main() {
+suspend fun main() {
     BotApplication().start()
 }
