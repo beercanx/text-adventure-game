@@ -18,22 +18,24 @@ import uk.co.baconi.games.tag.bot.discord.Categories.findGuildCategory
 import uk.co.baconi.games.tag.bot.discord.CommandDefinitions.createGuildCommandDefinition
 import uk.co.baconi.games.tag.engine.GameEngine
 
-// TODO - Rebrand to 'setup'
-interface StartCommand {
+interface SetupCommand {
 
     val kord: Kord
     val gameEngine: GameEngine<Snowflake>
 
     private val logger: Logger
-        get() = LoggerFactory.getLogger(StartCommand::class.java)
+        get() = LoggerFactory.getLogger(SetupCommand::class.java)
 
-    suspend fun registerStartCommand(guild: Guild) {
+    suspend fun registerSetupCommand(guild: Guild) {
 
-        val command = kord.createGuildCommandDefinition(guild, "start", "Start the Text Adventure Game")
+        val command = kord.createGuildCommandDefinition(guild, "setup", "Setup the Text Adventure Game")
 
         kord.on<GuildChatInputCommandInteractionCreateEvent> {
             if (interaction.command.rootId != command.id) return@on
             if (interaction.guildId != guild.id) return@on
+
+            logger.info("Setting up for '{}'", guild.name)
+
             val response = interaction.deferPublicResponse()
 
             kotlin.runCatching {
@@ -69,14 +71,17 @@ interface StartCommand {
 
                 // TODO - Remove unaffiliated channels
 
+                // TODO - Register any game specific verbs
+
             }.onFailure { throwable ->
-                logger.error("Failed to start the game cleanly", throwable)
+                logger.error("Failed to setup the game cleanly", throwable)
                 response.respond {
                     content = "${Emojis.skullAndCrossbones} encountered a problem: ${throwable::class.java}"
                 }
             }.onSuccess {
+                logger.info("Setup complete in '{}'", guild.name)
                 response.respond {
-                    content = "${Emojis.constructionSite} start is under construction..."
+                    content = "${Emojis.constructionSite} setup is under construction..."
                 }
             }
         }

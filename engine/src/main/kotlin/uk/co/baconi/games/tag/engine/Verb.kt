@@ -25,9 +25,9 @@ enum class Verb {
     // TODO - Show,
 
     // Special
-    Start, // Starts a new game.
-    Quit, // Ends the current game.
-    Help, // Shows some information about the game and its author, in some cases even hints to some of the puzzles.
+    //Setup, // Starts a new game.
+    //Purge, // Ends the current game.
+    //Help, // Shows some information about the game and its author, in some cases even hints to some of the puzzles.
     // TODO - Undo, // Takes back the last move you made.
     // TODO - Restart, // Starts the game over from the beginning.
     // TODO - Save, // Saves your current position to a file on disk.

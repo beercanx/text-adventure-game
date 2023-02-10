@@ -36,8 +36,8 @@ interface HelpCommand {
                         value = """
                             ` /help  ` Displays this general help content
                             ` /info  ` Displays information about the bot
-                            ` /start ` Starts a new game
-                            ` /end   ` Ends the current game
+                            ` /setup ` Sets up the game within the guild
+                            ` /purge ` Purges the game from the guild
                         """.trimIndent()
                     }
                 }

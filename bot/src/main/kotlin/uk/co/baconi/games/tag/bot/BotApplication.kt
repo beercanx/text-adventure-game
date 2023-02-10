@@ -2,13 +2,9 @@ package uk.co.baconi.games.tag.bot
 
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
-import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.global.InfoCommand
-import uk.co.baconi.games.tag.bot.guild.EndCommand
 import uk.co.baconi.games.tag.bot.guild.GuildCommands
-import uk.co.baconi.games.tag.bot.guild.HelpCommand
-import uk.co.baconi.games.tag.bot.guild.StartCommand
 import uk.co.baconi.games.tag.engine.GameEngine
 
 class BotApplication(
