@@ -4,11 +4,12 @@ import com.typesafe.config.ConfigFactory
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-data class BotConfiguration(val token: String, val startup: Instant) {
+data class BotConfiguration(val token: String, val startup: Instant, val purgeGuildCommands: Boolean) {
 
     constructor() : this(
         token = config.getString("token"),
-        startup = Clock.System.now()
+        startup = Clock.System.now(),
+        purgeGuildCommands = config.getBoolean("purge.guild.commands")
     )
 
     companion object {

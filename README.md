@@ -40,13 +40,17 @@ TOKEN=abc-123
 # Used to toggle the application logging, enable trace to see all events recieved. 
 # Default: DEBUG
 LOGGING_LEVEL=TRACE
+
+# Used to purge all commands when registering a new guild, useful for when the bot has changed its command structure.
+# Default: false
+PURGE_GUILD_COMMANDS=true
 ```
 
 ### Discord permissions
 To use this integration with a Discord application (integration), it will need the following permissions.
 
 ```
-https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=0&scope=bot
+https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=16&scope=bot
 ```
 
 #### Privileged Gateway Intents:
@@ -56,7 +60,7 @@ https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=
 * bot
 
 #### General Permissions:
-* None, for now
+* Manage Channels
 
 #### Text Permissions:
 * None, for now
