@@ -1,13 +1,18 @@
 package uk.co.baconi.games.tag.bot.guild
 
-import dev.kord.common.entity.Snowflake
+import dev.kord.common.entity.*
+import dev.kord.common.entity.Permission.ViewChannel
 import dev.kord.core.behavior.GuildBehavior
+import dev.kord.core.behavior.MemberBehavior
+import dev.kord.core.behavior.RoleBehavior
 import dev.kord.core.behavior.channel.createTextChannel
+import dev.kord.core.behavior.channel.edit
 import dev.kord.core.behavior.createCategory
-import dev.kord.core.entity.Guild
 import dev.kord.core.entity.channel.Category
 import dev.kord.core.entity.channel.TextChannel
+import dev.kord.rest.builder.channel.PermissionOverwritesBuilder
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.engine.GameEngine
@@ -29,9 +34,13 @@ class SetupService(private val guildService: GuildService, private val gameEngin
     }
 
     private suspend fun manageCategory(guild: GuildBehavior): Category {
+
         return when (val category = guildService.findCategory(guild, CATEGORY_NAME)) {
 
-            null -> guild.createCategory(CATEGORY_NAME).also {
+            null -> guild.createCategory(CATEGORY_NAME) {
+                role(getBotRole(guild), allow = Permissions(ViewChannel))
+                everyone(guild, deny = Permissions(ViewChannel))
+            }.also {
                 logger.debug("Category '{}' created in '{}'", it.name, guild.id)
             }
 
@@ -55,7 +64,10 @@ class SetupService(private val guildService: GuildService, private val gameEngin
 
             when (val channel = channels.firstOrNull { it.name == room.displayName }) {
 
-                null -> category.createTextChannel(room.displayName).also {
+                null -> category.createTextChannel(room.displayName) {
+                    role(getBotRole(guild), allow = Permissions(ViewChannel))
+                    everyone(guild, deny = Permissions(ViewChannel))
+                }.also {
                     logger.debug("Channel '{}' created under '{}' in '{}'", it.name, category.name, guild.id)
                 }
 
@@ -72,5 +84,27 @@ class SetupService(private val guildService: GuildService, private val gameEngin
 
     private suspend fun manageVerbCommands(guild: GuildBehavior) {
         // TODO
+    }
+
+    private suspend fun getBotRole(guild: GuildBehavior): RoleBehavior {
+        return guild.roles.first { it.name == guild.kord.getSelf().username }
+    }
+
+    private fun PermissionOverwritesBuilder.everyone(
+        guild: GuildBehavior, allow: Permissions = Permissions(), deny: Permissions = Permissions()
+    ) {
+        addOverwrite(Overwrite(guild.id, OverwriteType.Role, allow = allow, deny = deny))
+    }
+
+    private fun PermissionOverwritesBuilder.member(
+        member: MemberBehavior, allow: Permissions = Permissions(), deny: Permissions = Permissions()
+    ) {
+        addOverwrite(Overwrite(member.id, OverwriteType.Member, allow = allow, deny = deny))
+    }
+
+    private fun PermissionOverwritesBuilder.role(
+        role: RoleBehavior, allow: Permissions = Permissions(), deny: Permissions = Permissions()
+    ) {
+        addOverwrite(Overwrite(role.id, OverwriteType.Role, allow = allow, deny = deny))
     }
 }

@@ -2,6 +2,8 @@ package uk.co.baconi.games.tag.bot
 
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
+import dev.kord.gateway.Intent
+import dev.kord.gateway.Intents
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.global.GlobalService
 import uk.co.baconi.games.tag.bot.global.InfoCommand
@@ -46,8 +48,7 @@ class BotApplication(
         registerGuildCommands()
 
         kord.login {
-            //@OptIn(PrivilegedIntent::class)
-            //intents += Intent.MessageContent
+            intents = Intents.none
         }
     }
 }
