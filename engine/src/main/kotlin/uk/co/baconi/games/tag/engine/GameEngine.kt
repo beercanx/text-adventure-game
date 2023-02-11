@@ -1,14 +1,11 @@
 package uk.co.baconi.games.tag.engine
 
-class GameEngine<GameId> {
-
-    private val layouts: MutableMap<GameId, Layout> = mutableMapOf()
+class GameEngine<GameId>(private val layouts: MutableMap<GameId, Layout> = mutableMapOf()) {
 
     fun start(gameId: GameId): Layout {
-        // TODO - Generate one?
-        val layout = exampleLayout
-        layouts[gameId] = layout
-        return layout
+        return layouts.computeIfAbsent(gameId) {
+            exampleLayout // TODO - Generate one instead?
+        }
     }
 
     fun getLayout(gameId: GameId): Layout {

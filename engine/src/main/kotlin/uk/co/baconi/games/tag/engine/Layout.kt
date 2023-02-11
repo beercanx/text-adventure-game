@@ -3,7 +3,7 @@ package uk.co.baconi.games.tag.engine
 data class Layout(val data: Map<Room, List<Room>>) {
 
     fun isConnected(current: Room, next: Room): Boolean {
-        return when(val connections = data[current]) {
+        return when (val connections = data[current]) {
             null -> false
             else -> connections.contains(next)
         }

@@ -8,24 +8,24 @@ import dev.kord.core.on
 import dev.kord.rest.builder.message.create.embed
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import uk.co.baconi.games.tag.bot.discord.CommandDefinitions.createGuildCommandDefinition
 import uk.co.baconi.games.tag.bot.discord.withApplicationThumbnail
-import uk.co.baconi.games.tag.bot.discord.withGuildThumbnail
 
 interface HelpCommand {
 
     val kord: Kord
+    val guildService: GuildService
 
     private val logger: Logger
         get() = LoggerFactory.getLogger(HelpCommand::class.java)
 
     suspend fun registerHelpCommand(guild: Guild) {
 
-        val command = kord.createGuildCommandDefinition(guild, "help", "Help for the Text Adventure Game")
+        val command = guildService.createCommandDefinition(guild, "help", "Help for the Text Adventure Game")
 
         kord.on<GuildChatInputCommandInteractionCreateEvent> {
             if (interaction.command.rootId != command.id) return@on
             if (interaction.guildId != guild.id) return@on
+
             interaction.respondPublic {
                 embed {
                     withApplicationThumbnail(kord)

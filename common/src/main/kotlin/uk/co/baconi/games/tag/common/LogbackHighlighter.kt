@@ -9,7 +9,7 @@ import ch.qos.logback.core.pattern.color.ForegroundCompositeConverterBase
  * Provides customised version of https://logback.qos.ch/manual/layouts.html#coloring
  */
 class LogbackHighlighter : ForegroundCompositeConverterBase<ILoggingEvent>() {
-    override fun getForegroundColorCode(event: ILoggingEvent): String = when(event.level) {
+    override fun getForegroundColorCode(event: ILoggingEvent): String = when (event.level) {
         ERROR -> BOLD + RED_FG
         WARN -> YELLOW_FG
         INFO -> BLUE_FG

@@ -1,6 +1,6 @@
 <configuration>
 
-    <conversionRule conversionWord="colour" converterClass="uk.co.baconi.games.tag.common.LogbackHighlighter" />
+    <conversionRule conversionWord="colour" converterClass="uk.co.baconi.games.tag.common.LogbackHighlighter"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

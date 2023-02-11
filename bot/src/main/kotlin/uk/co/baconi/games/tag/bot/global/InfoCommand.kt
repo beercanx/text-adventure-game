@@ -8,13 +8,13 @@ import dev.kord.rest.builder.message.create.embed
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.BotConfiguration
-import uk.co.baconi.games.tag.bot.discord.CommandDefinitions.createGlobalCommandDefinition
 import uk.co.baconi.games.tag.bot.discord.withApplicationThumbnail
 
 interface InfoCommand {
 
     val kord: Kord
     val configuration: BotConfiguration
+    val globalService: GlobalService
 
     private val logger: Logger
         get() = LoggerFactory.getLogger(InfoCommand::class.java)
@@ -22,7 +22,7 @@ interface InfoCommand {
     suspend fun registerInfoCommand() {
 
         // Register global slash command definition
-        kord.createGlobalCommandDefinition("info", "Bot info for Text Adventure Game")
+        globalService.createCommandDefinition("info", "Bot info for Text Adventure Game")
 
         // Create `/info` command listener
         kord.on<ChatInputCommandInteractionCreateEvent> {

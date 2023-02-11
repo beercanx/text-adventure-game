@@ -3,24 +3,33 @@ package uk.co.baconi.games.tag.bot
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
 import org.slf4j.LoggerFactory
+import uk.co.baconi.games.tag.bot.global.GlobalService
 import uk.co.baconi.games.tag.bot.global.InfoCommand
 import uk.co.baconi.games.tag.bot.guild.GuildCommands
+import uk.co.baconi.games.tag.bot.guild.GuildService
+import uk.co.baconi.games.tag.bot.guild.PurgeService
+import uk.co.baconi.games.tag.bot.guild.SetupService
+import uk.co.baconi.games.tag.bot.monitoring.EventLogging
 import uk.co.baconi.games.tag.engine.GameEngine
 
 class BotApplication(
     override val kord: Kord,
-    override val gameEngine: GameEngine<Snowflake>,
     override val configuration: BotConfiguration,
 ) : EventLogging, InfoCommand, GuildCommands {
+
+    private val gameEngine = GameEngine<Snowflake>()
+
+    override val globalService = GlobalService(kord)
+    override val guildService = GuildService(kord)
+    override val setupService = SetupService(guildService, gameEngine)
+    override val purgeService = PurgeService(guildService)
 
     companion object {
 
         private val logger = LoggerFactory.getLogger(BotApplication::class.java)
 
-        suspend operator fun invoke() = invoke(GameEngine(), BotConfiguration())
-
-        suspend operator fun invoke(gameEngine: GameEngine<Snowflake>, configuration: BotConfiguration): BotApplication {
-            return BotApplication(Kord(configuration.token), gameEngine, configuration)
+        suspend operator fun invoke(): BotApplication = BotConfiguration().let { configuration ->
+            return BotApplication(Kord(configuration.token), configuration)
         }
     }
 

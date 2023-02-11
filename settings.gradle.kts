@@ -1,4 +1,3 @@
-
 rootProject.name = "text-adventure-game"
 
 include(":common")
