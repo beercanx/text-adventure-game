@@ -1,6 +1,7 @@
 package uk.co.baconi.games.tag.bot.guild
 
 import dev.kord.core.Kord
+import dev.kord.core.behavior.GuildBehavior
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.entity.channel.Category
@@ -17,7 +18,7 @@ class GuildService(private val kord: Kord) {
     /**
      * @throws Throwable from retrieving the existing commands from the Discord API.
      */
-    suspend fun findCategory(guild: Guild, name: String): Category? {
+    suspend fun findCategory(guild: GuildBehavior, name: String): Category? {
         return guild.channels
             .filterIsInstance<Category>()
             .firstOrNull { command -> command.name == name }
@@ -26,29 +27,29 @@ class GuildService(private val kord: Kord) {
     /**
      * @throws Throwable from retrieving the existing commands from the Discord API.
      */
-    suspend fun findCommandDefinition(guild: Guild, name: String): GuildChatInputCommand? {
+    suspend fun findCommandDefinition(guild: GuildBehavior, name: String): GuildChatInputCommand? {
         return kord.getGuildApplicationCommands(guild.id)
             .filterIsInstance<GuildChatInputCommand>()
             .firstOrNull { command -> command.name == name }
     }
 
-    suspend fun createCommandDefinition(guild: Guild, name: String, description: String): GuildChatInputCommand {
+    suspend fun createCommandDefinition(guild: GuildBehavior, name: String, description: String): GuildChatInputCommand {
         val definition = findCommandDefinition(guild, name)
         return when {
 
             definition == null -> {
                 kord.createGuildChatInputCommand(guild.id, name, description).also {
-                    logger.debug("Guild command '{}' definition created in '{}'", name, guild.name)
+                    logger.debug("Guild command '{}' definition created in '{}'", name, guild.id)
                 }
             }
 
             definition.data.description != description -> {
-                logger.warn("Guild command '{}' in '{}' has a misconfigured description", name, guild.name)
+                logger.warn("Guild command '{}' in '{}' has a misconfigured description", name, guild.id)
                 definition
             }
 
             else -> {
-                logger.trace("Guild command '{}' already exists for '{}'", name, guild.name)
+                logger.trace("Guild command '{}' already exists for '{}'", name, guild.id)
                 definition
             }
         }

@@ -3,11 +3,14 @@ package uk.co.baconi.games.tag.bot.guild
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.entity.Guild
+import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
 import dev.kord.x.emoji.Emojis
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+private const val SETUP = "setup"
 
 interface SetupCommand {
 
@@ -18,30 +21,29 @@ interface SetupCommand {
     private val logger: Logger
         get() = LoggerFactory.getLogger(SetupCommand::class.java)
 
-    suspend fun registerSetupCommand(guild: Guild) {
 
-        val command = guildService.createCommandDefinition(guild, "setup", "Setup the Text Adventure Game")
+    suspend fun registerSetupCommandDefinition(guild: Guild): GuildChatInputCommand {
+        return guildService.createCommandDefinition(guild, SETUP, "Setup the Text Adventure Game")
+    }
 
-        kord.on<GuildChatInputCommandInteractionCreateEvent> {
-            if (interaction.command.rootId != command.id) return@on
-            if (interaction.guildId != guild.id) return@on
+    suspend fun registerSetupCommand() = kord.on<GuildChatInputCommandInteractionCreateEvent> {
+        if (interaction.invokedCommandName != SETUP) return@on
 
-            logger.info("Setting up for '{}'", guild.name)
+        val response = interaction.deferPublicResponse()
 
-            val response = interaction.deferPublicResponse()
+        logger.info("Setting up for '{}'", interaction.guild.id)
 
-            setupService.setup(guild)
-                .onFailure { throwable ->
-                    logger.error("Failed to setup the game cleanly", throwable)
-                    response.respond {
-                        content = "${Emojis.skullAndCrossbones} encountered a problem: ${throwable::class.java}"
-                    }
-                }.onSuccess {
-                    logger.info("Setup complete in '{}'", guild.name)
-                    response.respond {
-                        content = "${Emojis.constructionSite} setup is under construction..."
-                    }
+        setupService.setup(interaction.guild)
+            .onFailure { throwable ->
+                logger.error("Failed to setup the game cleanly", throwable)
+                response.respond {
+                    content = "${Emojis.skullAndCrossbones} encountered a problem: ${throwable::class.java}"
                 }
-        }
+            }.onSuccess {
+                logger.info("Setup complete in '{}'", interaction.guild.id)
+                response.respond {
+                    content = "${Emojis.constructionSite} setup is under construction..."
+                }
+            }
     }
 }

@@ -17,15 +17,19 @@ interface GuildCommands : GuildPurger, HelpCommand, SetupCommand, PurgeCommand {
 
     suspend fun registerGuildCommands() {
 
+        registerHelpCommand()
+        registerSetupCommand()
+        registerPurgeCommand()
+
         kord.on<GuildCreateEvent> {
 
-            logger.info("Registering guild commands for '{}' with id {}", guild.name, guild.id)
+            logger.info("Registering command definitions for '{}' with id {}", guild.name, guild.id)
 
             if (configuration.purgeGuildCommands) purgeAllCommandsFrom(guild)
 
-            registerHelpCommand(guild)
-            registerSetupCommand(guild)
-            registerPurgeCommand(guild)
+            registerHelpCommandDefinition(guild)
+            registerSetupCommandDefinition(guild)
+            registerPurgeCommandDefinition(guild)
         }
     }
 }

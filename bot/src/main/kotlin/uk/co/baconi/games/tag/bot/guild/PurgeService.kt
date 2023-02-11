@@ -1,5 +1,6 @@
 package uk.co.baconi.games.tag.bot.guild
 
+import dev.kord.core.behavior.GuildBehavior
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.User
 import dev.kord.core.entity.channel.Category
@@ -14,39 +15,39 @@ class PurgeService(private val guildService: GuildService) {
         private val logger = LoggerFactory.getLogger(PurgeService::class.java)
     }
 
-    suspend fun purge(guild: Guild, user: User): Result<Unit> = kotlin.runCatching {
+    suspend fun purge(guild: GuildBehavior, user: User): Result<Unit> = kotlin.runCatching {
 
         when (val category = guildService.findCategory(guild, CATEGORY_NAME)) {
             null -> logger.debug("No category found called '{}'", CATEGORY_NAME)
             else -> {
                 val reason = "Purge game has been called by ${user.username}"
-                removeChannels(guild, category, reason)
-                removeCategory(guild, category, reason)
+                removeChannels(category, reason)
+                removeCategory(category, reason)
             }
         }
 
         removeVerbCommands(guild)
     }
 
-    private suspend fun removeChannels(guild: Guild, category: Category?, reason: String) {
+    private suspend fun removeChannels(category: Category?, reason: String) {
         if (category == null) return
 
         category.channels
             .onEach { channel ->
-                logger.debug("Removing channel '{}' in '{}' from '{}'", channel.name, category.name, guild.name)
+                logger.debug("Removing channel '{}' in '{}' from '{}'", channel.name, category.name, category.guild.id)
                 channel.delete(reason)
             }
             .collect()
     }
 
-    private suspend fun removeCategory(guild: Guild, category: Category?, reason: String) {
+    private suspend fun removeCategory(category: Category?, reason: String) {
         if (category == null) return
 
-        logger.debug("Removing category '{}' from '{}'", category.name, guild.name)
+        logger.debug("Removing category '{}' from '{}'", category.name, category.guild.id)
         category.delete(reason)
     }
 
-    private suspend fun removeVerbCommands(guild: Guild) {
+    private suspend fun removeVerbCommands(guild: GuildBehavior) {
         // TODO
     }
 

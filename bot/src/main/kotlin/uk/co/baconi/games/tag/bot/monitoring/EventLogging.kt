@@ -43,10 +43,10 @@ interface EventLogging {
         kord.on<DisconnectEvent> {
             when (this) {
                 is DetachEvent,
-                -> logger.info("{}(shard=$shard)", this::class.java)
+                -> logger.info("{}(shard=$shard)", this::class.java.name)
 
                 is DiscordCloseEvent,
-                -> logger.error("{}(shard=$shard, closeCode=$closeCode, recoverable=$recoverable)", this::class.java)
+                -> logger.error("{}(shard=$shard, closeCode=$closeCode, recoverable=$recoverable)", this::class.java.name)
 
                 is ReconnectingEvent,
                 is RetryLimitReachedEvent,
@@ -54,7 +54,7 @@ interface EventLogging {
                 is TimeoutEvent,
                 is UserCloseEvent,
                 is ZombieConnectionEvent,
-                -> logger.error("{}(shard=$shard)", this::class.java)
+                -> logger.error("{}(shard=$shard)", this::class.java.name)
             }
         }
 
