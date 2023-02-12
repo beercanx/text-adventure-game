@@ -61,7 +61,7 @@ PURGE_GUILD_COMMANDS=true
 To use this integration with a Discord application (integration), it will need the following permissions.
 
 ```
-https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=16&scope=bot
+https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=268435472&scope=bot
 ```
 
 #### Privileged Gateway Intents:
@@ -71,6 +71,7 @@ https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=
 #### Scopes:
 
 * bot
+* applications.commands
 
 #### General Permissions:
 

@@ -1,5 +1,6 @@
 package uk.co.baconi.games.tag.bot.guild
 
+import dev.kord.common.entity.Permissions
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.entity.Guild
@@ -22,7 +23,9 @@ interface PurgeCommand {
         get() = LoggerFactory.getLogger(PurgeCommand::class.java)
 
     suspend fun registerPurgeCommandDefinition(guild: Guild): GuildChatInputCommand {
-        return guildService.createCommandDefinition(guild, PURGE, "Purge the Text Adventure Game")
+        return guildService.createCommandDefinition(guild, PURGE, "Purge the Text Adventure Game") {
+            defaultMemberPermissions = Permissions()
+        }
     }
 
     suspend fun registerPurgeCommand() = kord.on<GuildChatInputCommandInteractionCreateEvent> {
@@ -41,7 +44,13 @@ interface PurgeCommand {
             }.onSuccess {
                 logger.info("Purge completed for '{}'", interaction.guild.id)
                 response.respond {
-                    content = "${Emojis.broom} the game has now been purged."
+                    content = """
+                        ${Emojis.gameDie} the game category has been purged.
+                        ${Emojis.book} the game channels have been purged.
+                        ${Emojis.scroll} the game roles have been purged.
+                        
+                        ${Emojis.broom} the game has now been purged.
+                    """.trimIndent()
                 }
             }
     }

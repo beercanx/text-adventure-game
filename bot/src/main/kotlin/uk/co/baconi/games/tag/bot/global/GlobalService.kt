@@ -2,6 +2,7 @@ package uk.co.baconi.games.tag.bot.global
 
 import dev.kord.core.Kord
 import dev.kord.core.entity.application.GlobalChatInputCommand
+import dev.kord.rest.builder.interaction.GlobalChatInputCreateBuilder
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import org.slf4j.LoggerFactory
@@ -24,13 +25,19 @@ class GlobalService(private val kord: Kord) {
     /**
      * @throws Throwable from retrieving the existing commands from the Discord API.
      */
-    suspend fun createCommandDefinition(name: String, description: String): GlobalChatInputCommand {
+    suspend fun createCommandDefinition(
+        name: String,
+        description: String,
+        builder: GlobalChatInputCreateBuilder.() -> Unit = {}
+    ): GlobalChatInputCommand {
+
         val definition = findCommandDefinition(name)
         return when {
 
             definition == null -> {
-                logger.debug("Global command '{}' definition created", name)
-                kord.createGlobalChatInputCommand(name, description)
+                kord.createGlobalChatInputCommand(name, description, builder).also {
+                    logger.debug("Global command '{}' definition created", name)
+                }
             }
 
             definition.data.description != description -> {

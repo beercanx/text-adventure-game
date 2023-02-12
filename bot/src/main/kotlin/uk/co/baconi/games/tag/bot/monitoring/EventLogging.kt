@@ -14,6 +14,9 @@ import dev.kord.core.event.interaction.ApplicationCommandInteractionCreateEvent
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.event.message.MessageDeleteEvent
 import dev.kord.core.event.message.MessageUpdateEvent
+import dev.kord.core.event.role.RoleCreateEvent
+import dev.kord.core.event.role.RoleDeleteEvent
+import dev.kord.core.event.role.RoleUpdateEvent
 import dev.kord.core.event.user.VoiceStateUpdateEvent
 import dev.kord.core.on
 import org.slf4j.Logger
@@ -27,7 +30,7 @@ interface EventLogging {
         get() = LoggerFactory.getLogger(EventLogging::class.java)
 
     private val discordAuthorizeUrl: String
-        get() = "https://discord.com/api/oauth2/authorize?client_id={}&permissions=16&scope=bot"
+        get() = "https://discord.com/api/oauth2/authorize?client_id={}&permissions=268435472&scope=bot"
 
     suspend fun initialiseEventLogging() {
 
@@ -73,6 +76,9 @@ interface EventLogging {
                 is ChannelCreateEvent,
                 is ChannelDeleteEvent,
                 is ChannelUpdateEvent,
+                is RoleCreateEvent,
+                is RoleUpdateEvent,
+                is RoleDeleteEvent,
                 -> return@on
 
                 else -> logger.trace("{}", this)

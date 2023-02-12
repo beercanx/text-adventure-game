@@ -5,6 +5,7 @@ import dev.kord.core.entity.Guild
 import dev.kord.core.entity.User
 import dev.kord.core.entity.channel.Category
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onEach
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.guild.SetupService.Companion.CATEGORY_NAME
@@ -38,6 +39,15 @@ class PurgeService(private val guildService: GuildService) {
                 channel.delete(reason)
             }
             .collect()
+
+        // Remove the room roles
+        category.guild.roles
+            .filter { role -> role.name.startsWith("${category.name}: ") }
+            .onEach { role ->
+                logger.debug("Removing role '{}' from '{}'", role.name, category.guild.id)
+                role.delete(reason)
+            }
+            .collect()
     }
 
     private suspend fun removeCategory(category: Category?, reason: String) {
@@ -45,6 +55,15 @@ class PurgeService(private val guildService: GuildService) {
 
         logger.debug("Removing category '{}' from '{}'", category.name, category.guild.id)
         category.delete(reason)
+
+        // Remove the category role
+        category.guild.roles
+            .filter { role -> role.name == category.name }
+            .onEach { role ->
+                logger.debug("Removing role '{}' from '{}'", role.name, category.guild.id)
+                role.delete(reason)
+            }
+            .collect()
     }
 
     private suspend fun removeVerbCommands(guild: GuildBehavior) {

@@ -40,8 +40,8 @@ interface HelpCommand {
                     value = """
                             ` /help  ` Displays this general help content
                             ` /info  ` Displays information about the bot
-                            ` /setup ` Sets up the game within the guild
-                            ` /purge ` Purges the game from the guild
+                            ` /setup ` Sets up the game within the guild (guild admins only)
+                            ` /purge ` Purges the game from the guild (guild admins only)
                         """.trimIndent()
                 }
             }

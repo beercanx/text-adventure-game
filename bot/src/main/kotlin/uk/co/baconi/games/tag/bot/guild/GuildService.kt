@@ -5,6 +5,7 @@ import dev.kord.core.behavior.GuildBehavior
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.entity.channel.Category
+import dev.kord.rest.builder.interaction.ChatInputCreateBuilder
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import org.slf4j.LoggerFactory
@@ -33,12 +34,17 @@ class GuildService(private val kord: Kord) {
             .firstOrNull { command -> command.name == name }
     }
 
-    suspend fun createCommandDefinition(guild: GuildBehavior, name: String, description: String): GuildChatInputCommand {
+    suspend fun createCommandDefinition(
+        guild: GuildBehavior,
+        name: String,
+        description: String, builder: ChatInputCreateBuilder.() -> Unit = {}
+    ): GuildChatInputCommand {
+
         val definition = findCommandDefinition(guild, name)
         return when {
 
             definition == null -> {
-                kord.createGuildChatInputCommand(guild.id, name, description).also {
+                kord.createGuildChatInputCommand(guild.id, name, description, builder).also {
                     logger.debug("Guild command '{}' definition created in '{}'", name, guild.id)
                 }
             }

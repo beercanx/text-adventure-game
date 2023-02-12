@@ -1,11 +1,16 @@
 package uk.co.baconi.games.tag.bot.guild
 
+import dev.kord.common.entity.Permission
+import dev.kord.common.entity.Permissions
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
+import dev.kord.rest.builder.interaction.channel
+import dev.kord.rest.builder.interaction.int
+import dev.kord.rest.builder.interaction.role
 import dev.kord.x.emoji.Emojis
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -21,9 +26,10 @@ interface SetupCommand {
     private val logger: Logger
         get() = LoggerFactory.getLogger(SetupCommand::class.java)
 
-
     suspend fun registerSetupCommandDefinition(guild: Guild): GuildChatInputCommand {
-        return guildService.createCommandDefinition(guild, SETUP, "Setup the Text Adventure Game")
+        return guildService.createCommandDefinition(guild, SETUP, "Setup the Text Adventure Game") {
+            defaultMemberPermissions = Permissions()
+        }
     }
 
     suspend fun registerSetupCommand() = kord.on<GuildChatInputCommandInteractionCreateEvent> {
@@ -42,7 +48,13 @@ interface SetupCommand {
             }.onSuccess {
                 logger.info("Setup complete in '{}'", interaction.guild.id)
                 response.respond {
-                    content = "${Emojis.constructionSite} setup is under construction..."
+                    content = """
+                        ${Emojis.gameDie} the game category has been crated.
+                        ${Emojis.book} the game channels have been created.
+                        ${Emojis.scroll} the game roles have been created.
+                        
+                        ${Emojis.constructionSite} more to come...
+                    """.trimIndent()
                 }
             }
     }
