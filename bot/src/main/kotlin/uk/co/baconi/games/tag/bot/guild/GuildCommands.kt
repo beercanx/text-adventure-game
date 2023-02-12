@@ -7,7 +7,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.BotConfiguration
 
-interface GuildCommands : GuildPurger, HelpCommand, SetupCommand, PurgeCommand {
+interface GuildCommands : GuildPurger, HelpCommand, SetupCommand, PurgeCommand, StartCommand {
 
     override val kord: Kord
     val configuration: BotConfiguration
@@ -20,6 +20,7 @@ interface GuildCommands : GuildPurger, HelpCommand, SetupCommand, PurgeCommand {
         registerHelpCommand()
         registerSetupCommand()
         registerPurgeCommand()
+        registerStartCommand()
 
         kord.on<GuildCreateEvent> {
 
@@ -30,6 +31,7 @@ interface GuildCommands : GuildPurger, HelpCommand, SetupCommand, PurgeCommand {
             registerHelpCommandDefinition(guild)
             registerSetupCommandDefinition(guild)
             registerPurgeCommandDefinition(guild)
+            registerStartCommandDefinition(guild)
         }
     }
 }

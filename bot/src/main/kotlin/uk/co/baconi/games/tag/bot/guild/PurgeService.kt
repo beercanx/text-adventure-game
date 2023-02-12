@@ -1,14 +1,13 @@
 package uk.co.baconi.games.tag.bot.guild
 
 import dev.kord.core.behavior.GuildBehavior
-import dev.kord.core.entity.Guild
 import dev.kord.core.entity.User
 import dev.kord.core.entity.channel.Category
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onEach
 import org.slf4j.LoggerFactory
-import uk.co.baconi.games.tag.bot.guild.SetupService.Companion.CATEGORY_NAME
+import uk.co.baconi.games.tag.bot.guild.SetupService.Companion.GAME_DISPLAY_NAME
 
 class PurgeService(private val guildService: GuildService) {
 
@@ -18,8 +17,8 @@ class PurgeService(private val guildService: GuildService) {
 
     suspend fun purge(guild: GuildBehavior, user: User): Result<Unit> = kotlin.runCatching {
 
-        when (val category = guildService.findCategory(guild, CATEGORY_NAME)) {
-            null -> logger.debug("No category found called '{}'", CATEGORY_NAME)
+        when (val category = guildService.findCategory(guild, GAME_DISPLAY_NAME)) {
+            null -> logger.debug("No category found called '{}'", GAME_DISPLAY_NAME)
             else -> {
                 val reason = "Purge game has been called by ${user.username}"
                 removeChannels(category, reason)

@@ -1,10 +1,14 @@
 package uk.co.baconi.games.tag.bot.guild
 
-import dev.kord.common.entity.*
 import dev.kord.common.entity.Permission.ViewChannel
-import dev.kord.core.behavior.*
+import dev.kord.common.entity.Permissions
+import dev.kord.common.entity.Snowflake
+import dev.kord.core.behavior.GuildBehavior
+import dev.kord.core.behavior.RoleBehavior
 import dev.kord.core.behavior.channel.CategoryBehavior
 import dev.kord.core.behavior.channel.createTextChannel
+import dev.kord.core.behavior.createCategory
+import dev.kord.core.behavior.createRole
 import dev.kord.core.entity.Role
 import dev.kord.core.entity.channel.Category
 import dev.kord.core.entity.channel.TextChannel
@@ -21,7 +25,7 @@ import uk.co.baconi.games.tag.engine.Room
 class SetupService(private val guildService: GuildService, private val gameEngine: GameEngine<Snowflake>) {
 
     companion object {
-        const val CATEGORY_NAME = "Game"
+        const val GAME_DISPLAY_NAME = "Game"
         private val logger = LoggerFactory.getLogger(SetupService::class.java)
     }
 
@@ -35,9 +39,9 @@ class SetupService(private val guildService: GuildService, private val gameEngin
 
     private suspend fun manageCategory(guild: GuildBehavior): Category {
 
-        return when (val category = guildService.findCategory(guild, CATEGORY_NAME)) {
+        return when (val category = guildService.findCategory(guild, GAME_DISPLAY_NAME)) {
 
-            null -> createCategory(guild, CATEGORY_NAME).also {
+            null -> createCategory(guild, GAME_DISPLAY_NAME).also {
                 logger.debug("Category '{}' created in '{}'", it.name, guild.id)
             }
 
@@ -61,13 +65,14 @@ class SetupService(private val guildService: GuildService, private val gameEngin
     }
 
     private suspend fun manageRole(guild: GuildBehavior, name: String, block: RoleCreateBuilder.() -> Unit = {}): Role {
-        return when(val role = guild.roles.firstOrNull { it.name == name }) {
+        return when (val role = guild.roles.firstOrNull { it.name == name }) {
             null -> guild.createRole {
                 this.name = name
                 block()
             }.also {
                 logger.debug("Role '{}' created in '{}'", it.name, guild.id)
             }
+
             else -> role.also {
                 logger.trace("Role '{}' already exists for '{}'", it.name, guild.id)
             }
