@@ -3,6 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
 }
 
 group = "uk.co.baconi.games.tag"
@@ -26,6 +27,7 @@ dependencies {
 
     // Configuration
     implementation("com.typesafe:config:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-hocon:1.5.0-RC")
 
     // Test definitions and running
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")

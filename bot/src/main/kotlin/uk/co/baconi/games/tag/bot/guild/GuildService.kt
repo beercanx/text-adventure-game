@@ -2,7 +2,6 @@ package uk.co.baconi.games.tag.bot.guild
 
 import dev.kord.core.Kord
 import dev.kord.core.behavior.GuildBehavior
-import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.entity.channel.Category
 import dev.kord.rest.builder.interaction.ChatInputCreateBuilder

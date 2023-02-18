@@ -54,6 +54,10 @@ LOGGING_LEVEL=TRACE
 # Used to purge all commands when registering a new guild, useful for when the bot has changed its command structure.
 # Default: false
 PURGE_GUILD_COMMANDS=true
+
+# Used to load layout from the reference.conf instead of the coded version.
+# Default: false
+LOAD_LAYOUT_FROM_CONFIG=true
 ```
 
 ### Discord permissions

@@ -1,5 +1,8 @@
 package uk.co.baconi.games.tag.engine
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class Room(val displayName: String) {
     FrontPath("front-path"),
     Drive("drive"),

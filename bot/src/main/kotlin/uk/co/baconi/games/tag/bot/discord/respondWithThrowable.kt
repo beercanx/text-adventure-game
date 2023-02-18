@@ -1,5 +1,6 @@
 package uk.co.baconi.games.tag.bot.discord
 
+import dev.kord.common.Color
 import dev.kord.core.behavior.interaction.response.DeferredPublicMessageInteractionResponseBehavior
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.rest.builder.message.modify.embed
@@ -11,35 +12,28 @@ suspend fun DeferredPublicMessageInteractionResponseBehavior.respondWithThrowabl
     respond {
         content = "${Emojis.skullAndCrossbones} encountered a problem"
         embed {
-            title = when(throwable) {
+            title = when (throwable) {
                 is Error -> "Error"
                 is Exception -> "Exception"
                 else -> "Throwable"
             }
+            color = Color(0xff0000) // Red
             field {
                 name = "Class"
                 value = throwable::class.toString()
-                inline = true
             }
-            field {
-                name = "Cause"
-                value = when(val cause = throwable.cause) {
-                    null -> ""
-                    else -> cause::class.toString()
-                }
-                inline = true
-            }
-            field {
-                name = "Root Cause"
-                value = when(val rootCause = throwable.rootCause) {
-                    null -> ""
-                    else -> rootCause::class.toString()
+            when (val cause = throwable.cause) {
+                is Throwable -> field {
+                    name = "Cause"
+                    value = cause::class.toString()
                 }
             }
-//            field {
-//                name = "Message"
-//                value = throwable.message ?: ""
-//            }
+            when (val rootCause = throwable.rootCause) {
+                is Throwable -> field {
+                    name = "Root Cause"
+                    value = rootCause::class.toString()
+                }
+            }
         }
     }
 }

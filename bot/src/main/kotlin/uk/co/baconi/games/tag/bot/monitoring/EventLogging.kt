@@ -49,7 +49,10 @@ interface EventLogging {
                 -> logger.info("{}(shard=$shard)", this::class.java.name)
 
                 is DiscordCloseEvent,
-                -> logger.error("{}(shard=$shard, closeCode=$closeCode, recoverable=$recoverable)", this::class.java.name)
+                -> logger.error(
+                    "{}(shard=$shard, closeCode=$closeCode, recoverable=$recoverable)",
+                    this::class.java.name
+                )
 
                 is ReconnectingEvent,
                 is RetryLimitReachedEvent,

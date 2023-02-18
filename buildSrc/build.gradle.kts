@@ -7,6 +7,7 @@ repositories {
 }
 
 dependencies {
-    // Versions the 'kotlin("jvm")' plugin in the 'text-adventure-game.common' convention plugin
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+    val kotlinVersion = "1.8.10"
+    implementation(kotlin("gradle-plugin", kotlinVersion))
+    implementation(kotlin("serialization", kotlinVersion))
 }
