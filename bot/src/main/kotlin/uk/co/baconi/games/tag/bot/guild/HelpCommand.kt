@@ -4,8 +4,6 @@ import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.respondPublic
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
-import dev.kord.core.entity.interaction.ApplicationCommandInteraction
-import dev.kord.core.event.interaction.ApplicationCommandInteractionCreateEvent
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
 import dev.kord.rest.builder.message.create.embed
@@ -19,6 +17,7 @@ interface HelpCommand {
 
     val kord: Kord
     val guildService: GuildService
+    val helpService: HelpService
 
     private val logger: Logger
         get() = LoggerFactory.getLogger(HelpCommand::class.java)
@@ -33,17 +32,10 @@ interface HelpCommand {
         interaction.respondPublic {
             embed {
                 withApplicationThumbnail(kord)
-                // TODO - Make this dynamic depending on what's been setup?
                 // TODO - Change this to provide actual game help once its started?
                 field {
                     name = "Available Commands:"
-                    value = """
-                            ` /help  ` Displays this general help content
-                            ` /info  ` Displays information about the bot
-                            ` /start ` Gets you started in the game, if has been setup.
-                            ` /setup ` Sets up the game within the guild (guild admins only)
-                            ` /purge ` Purges the game from the guild (guild admins only)
-                        """.trimIndent()
+                    value = helpService.helpMessage
                 }
             }
         }

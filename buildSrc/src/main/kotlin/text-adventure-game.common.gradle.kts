@@ -19,6 +19,8 @@ repositories {
 
 dependencies {
 
+    implementation(kotlin("reflect"))
+
     // Logging
     implementation("ch.qos.logback:logback-classic:1.4.5")
 

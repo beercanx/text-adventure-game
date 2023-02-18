@@ -32,6 +32,7 @@ class SetupService(private val guildService: GuildService, private val gameEngin
     suspend fun setup(guild: GuildBehavior): Result<Unit> = kotlin.runCatching {
         val category = manageCategory(guild)
         val rooms = getRooms(guild)
+        // TODO - Create welcome to game channel
         manageChannels(guild, category, rooms)
         removeUnaffiliatedChannels(guild, category, rooms)
         manageVerbCommands(guild)

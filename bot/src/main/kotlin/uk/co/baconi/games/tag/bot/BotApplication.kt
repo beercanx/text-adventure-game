@@ -8,10 +8,7 @@ import dev.kord.gateway.PrivilegedIntent
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.global.GlobalService
 import uk.co.baconi.games.tag.bot.global.InfoCommand
-import uk.co.baconi.games.tag.bot.guild.GuildCommands
-import uk.co.baconi.games.tag.bot.guild.GuildService
-import uk.co.baconi.games.tag.bot.guild.PurgeService
-import uk.co.baconi.games.tag.bot.guild.SetupService
+import uk.co.baconi.games.tag.bot.guild.*
 import uk.co.baconi.games.tag.bot.monitoring.EventLogging
 import uk.co.baconi.games.tag.engine.GameEngine
 
@@ -22,8 +19,9 @@ class BotApplication(
 
     private val gameEngine = GameEngine<Snowflake>()
 
-    override val globalService = GlobalService(kord)
-    override val guildService = GuildService(kord)
+    override val helpService = HelpService()
+    override val globalService = GlobalService(kord, helpService)
+    override val guildService = GuildService(kord, helpService)
     override val setupService = SetupService(guildService, gameEngine)
     override val purgeService = PurgeService(guildService)
 

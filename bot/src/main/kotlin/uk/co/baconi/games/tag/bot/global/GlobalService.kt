@@ -6,8 +6,9 @@ import dev.kord.rest.builder.interaction.GlobalChatInputCreateBuilder
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import org.slf4j.LoggerFactory
+import uk.co.baconi.games.tag.bot.guild.HelpService
 
-class GlobalService(private val kord: Kord) {
+class GlobalService(private val kord: Kord, private val helpService: HelpService) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(GlobalService::class.java)
@@ -49,6 +50,8 @@ class GlobalService(private val kord: Kord) {
                 logger.trace("Global command '{}' already exists", name)
                 definition
             }
+        }.also {
+            helpService.registerCommand(name, description)
         }
     }
 }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import org.slf4j.LoggerFactory
 
-class GuildService(private val kord: Kord) {
+class GuildService(private val kord: Kord, private val helpService: HelpService) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(GuildService::class.java)
@@ -58,6 +58,8 @@ class GuildService(private val kord: Kord) {
                 logger.trace("Guild command '{}' already exists for '{}'", name, guild.id)
                 definition
             }
+        }.also {
+            helpService.registerCommand(name, description)
         }
     }
 }

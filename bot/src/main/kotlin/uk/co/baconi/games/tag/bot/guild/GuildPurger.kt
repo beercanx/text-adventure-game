@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 interface GuildPurger {
 
     val kord: Kord
+    val helpService: HelpService
 
     private val logger: Logger
         get() = LoggerFactory.getLogger(GuildCommands::class.java)
@@ -22,6 +23,7 @@ interface GuildPurger {
             guild.getApplicationCommands().onEach { command ->
                 logger.debug("Purging command '{}' from '{}'", command.name, guild.name)
                 command.delete()
+                helpService.unregisterCommand(command.name)
             }.collect()
         }.onFailure { throwable ->
             logger.error("Failed purge all commands from guild '{}'", guild.name, throwable)

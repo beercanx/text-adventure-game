@@ -14,22 +14,22 @@ import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.guild.SetupService.Companion.GAME_DISPLAY_NAME
 import uk.co.baconi.games.tag.engine.Room
 
-private const val START = "start"
+private const val JOIN = "join"
 
-interface StartCommand {
+interface JoinCommand {
 
     val kord: Kord
     val guildService: GuildService
 
     private val logger: Logger
-        get() = LoggerFactory.getLogger(StartCommand::class.java)
+        get() = LoggerFactory.getLogger(JoinCommand::class.java)
 
     suspend fun registerStartCommandDefinition(guild: Guild): GuildChatInputCommand {
-        return guildService.createCommandDefinition(guild, START, "Start for the Text Adventure Game")
+        return guildService.createCommandDefinition(guild, JOIN, "Join the Text Adventure Game")
     }
 
     suspend fun registerStartCommand() = kord.on<GuildChatInputCommandInteractionCreateEvent> {
-        if (interaction.invokedCommandName != START) return@on
+        if (interaction.invokedCommandName != JOIN) return@on
 
         val response = interaction.deferEphemeralResponse()
 
@@ -41,9 +41,10 @@ interface StartCommand {
                     content = "What are you doing? You've already got access to the game!"
                 }
             } else {
-                val reason = "User has joined the game."
+                val reason = "User '${interaction.user.username}' has joined the game."
                 interaction.user.addRole(gameRole.id, reason)
                 interaction.user.addRole(firstRoomRole.id, reason)
+                // TODO - Also join the Welcome to Game channel and ping the user there and introduce them.
                 response.respond {
                     content = "Welcome to the game!"
                 }

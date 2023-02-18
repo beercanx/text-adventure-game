@@ -7,9 +7,11 @@ import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
+import dev.kord.rest.builder.message.modify.embed
 import dev.kord.x.emoji.Emojis
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import uk.co.baconi.games.tag.bot.discord.respondWithThrowableEmbed
 
 private const val PURGE = "purge"
 
@@ -38,19 +40,22 @@ interface PurgeCommand {
         purgeService.purge(interaction.guild, interaction.user)
             .onFailure { throwable ->
                 logger.error("Failed to purge the game fully", throwable)
-                response.respond {
-                    content = "${Emojis.skullAndCrossbones} encountered a problem: ${throwable::class.java}"
-                }
+                response.respondWithThrowableEmbed(throwable)
             }.onSuccess {
                 logger.info("Purge completed for '{}'", interaction.guild.id)
                 response.respond {
-                    content = """
-                        ${Emojis.gameDie} the game category has been purged.
-                        ${Emojis.book} the game channels have been purged.
-                        ${Emojis.scroll} the game roles have been purged.
-                        
-                        ${Emojis.broom} the game has now been purged.
-                    """.trimIndent()
+                    embed {
+                        field {
+                            name = "Purged:"
+                            value = """
+                                ${Emojis.gameDie} the game category has been purged.
+                                ${Emojis.book} the game channels have been purged.
+                                ${Emojis.scroll} the game roles have been purged.
+                                
+                                ${Emojis.broom} the game has now been purged.
+                            """.trimIndent()
+                        }
+                    }
                 }
             }
     }
