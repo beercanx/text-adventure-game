@@ -9,6 +9,16 @@ import kotlinx.serialization.hocon.decodeFromConfig
 @Serializable
 data class Layout(val data: Map<Room, List<Room>>) {
 
+    @OptIn(ExperimentalSerializationApi::class)
+    companion object {
+
+        private val hocon = Hocon
+
+        fun fromConfig(config: Config): Layout {
+            return Layout(hocon.decodeFromConfig(config))
+        }
+    }
+
     fun isConnected(current: Room, next: Room): Boolean {
         return when (val connections = data[current]) {
             null -> false
@@ -16,19 +26,7 @@ data class Layout(val data: Map<Room, List<Room>>) {
         }
     }
 
-    class Builder {
-
-        @OptIn(ExperimentalSerializationApi::class)
-        companion object {
-
-            private val hocon = Hocon
-
-            fun fromConfig(config: Config): Builder {
-                return Builder().add(hocon.decodeFromConfig<Map<Room, List<Room>>>(config))
-            }
-        }
-
-        private val data = mutableMapOf<Room, List<Room>>()
+    class Builder(private val data: MutableMap<Room, List<Room>> = mutableMapOf()) {
 
         fun add(room: Room, vararg connections: Room): Builder = apply {
             data[room] = listOf(*connections)

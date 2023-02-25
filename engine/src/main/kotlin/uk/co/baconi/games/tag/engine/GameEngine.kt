@@ -14,7 +14,7 @@ class GameEngine<GameId>(private val layouts: MutableMap<GameId, Layout> = mutab
     fun start(gameId: GameId): Layout {
         return layouts.computeIfAbsent(gameId) {
             if (loadFromConfig) {
-                Layout.Builder.fromConfig(layoutData).build()
+                Layout.fromConfig(layoutData)
             } else {
                 exampleLayout
             }
