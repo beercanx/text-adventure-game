@@ -1,8 +1,12 @@
 package uk.co.baconi.games.tag.engine
 
 import com.typesafe.config.ConfigFactory
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class GameEngine<GameId>(private val layouts: MutableMap<GameId, Layout> = mutableMapOf()) {
+
+    private val mutex = Mutex()
 
     companion object {
         private val config = ConfigFactory.load().getConfig("uk.co.baconi.games.tag.engine.layout")
@@ -10,9 +14,8 @@ class GameEngine<GameId>(private val layouts: MutableMap<GameId, Layout> = mutab
         private val loadFromConfig = config.getBoolean("enabled")
     }
 
-    @Synchronized
-    fun start(gameId: GameId): Layout {
-        return layouts.computeIfAbsent(gameId) {
+    suspend fun start(gameId: GameId): Layout = mutex.withLock {
+        layouts.computeIfAbsent(gameId) {
             if (loadFromConfig) {
                 Layout.fromConfig(layoutData)
             } else {

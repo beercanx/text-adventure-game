@@ -29,6 +29,9 @@ dependencies {
     implementation("com.typesafe:config:1.4.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-hocon:1.5.0-RC")
 
+    // Coroutines - Aligns to the version brought in by "dev.kord:kord-core:0.8.0-M17"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
     // Test definitions and running
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 

@@ -80,7 +80,7 @@ class SetupService(private val guildService: GuildService, private val gameEngin
         }
     }
 
-    private fun getRooms(guild: GuildBehavior): Set<Room> {
+    private suspend fun getRooms(guild: GuildBehavior): Set<Room> {
         return gameEngine.start(guild.id).data.keys
     }
 
