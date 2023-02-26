@@ -68,6 +68,10 @@ To use this integration with a Discord application (integration), it will need t
 https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=268435472&scope=bot
 ```
 
+#### Authorization Flow
+
+* None, for now
+
 #### Privileged Gateway Intents:
 
 * None, for now
@@ -75,10 +79,10 @@ https://discord.com/api/oauth2/authorize?client_id=<APPLICATION_ID>&permissions=
 #### Scopes:
 
 * bot
-* applications.commands
 
 #### General Permissions:
 
+* Manage Roles
 * Manage Channels
 
 #### Text Permissions:
