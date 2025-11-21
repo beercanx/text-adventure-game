@@ -2,7 +2,7 @@
 kotlin = "1.8.10"
 
 [libraries]
-typesafe-config = { module = "com.typesafe:config", version = "1.4.2" }
+typesafe-config = { module = "com.typesafe:config", version = "1.4.5" }
 
 logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.4.5" }
 
