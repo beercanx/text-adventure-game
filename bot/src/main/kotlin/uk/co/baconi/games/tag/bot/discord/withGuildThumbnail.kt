@@ -5,10 +5,10 @@ import dev.kord.rest.Image
 import dev.kord.rest.builder.message.EmbedBuilder
 
 fun EmbedBuilder.withGuildThumbnail(guild: Guild) {
-    when (val url = guild.getIconUrl(Image.Format.PNG)) {
+    when (val cdnUrl = guild.icon?.cdnUrl) {
         null -> return
         else -> thumbnail {
-            this.url = url
+            this.url = cdnUrl.toUrl()
         }
     }
 }

@@ -1,6 +1,16 @@
 plugins {
     application
-    id("text-adventure-game.common")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.plugin.serialization)
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
@@ -8,8 +18,8 @@ dependencies {
     implementation(project(":datastore"))
     implementation(project(":engine"))
 
-    implementation("dev.kord:kord-core:0.8.0-M17")
-    implementation("dev.kord.x:emoji:0.5.0")
+    implementation(libs.kord.core)
+    implementation(libs.kord.emoji)
 }
 
 application {

@@ -6,7 +6,7 @@ import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
-import dev.kord.rest.builder.message.create.embed
+import dev.kord.rest.builder.message.embed
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.discord.withApplicationThumbnail

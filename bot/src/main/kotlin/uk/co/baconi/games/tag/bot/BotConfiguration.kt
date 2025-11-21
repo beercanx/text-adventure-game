@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
+
 package uk.co.baconi.games.tag.bot
 
 import com.typesafe.config.ConfigFactory
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.time.Clock
 
 data class BotConfiguration(val token: String, val startup: Instant, val purgeGuildCommands: Boolean) {
 
