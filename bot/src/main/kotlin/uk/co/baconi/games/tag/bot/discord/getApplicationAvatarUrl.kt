@@ -11,7 +11,7 @@ private val logger: Logger
 suspend fun getApplicationAvatarUrl(kord: Kord) = runCatching {
     kord.getSelf()
 }.map { self ->
-    self.avatar?.url ?: self.defaultAvatar.url
+    self.avatar?.cdnUrl ?: self.defaultAvatar.cdnUrl
 }.onFailure { throwable ->
     logger.error("Failed to get kord.self", throwable)
 }.getOrNull()

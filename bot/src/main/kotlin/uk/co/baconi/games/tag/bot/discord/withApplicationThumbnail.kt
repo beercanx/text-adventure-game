@@ -4,10 +4,10 @@ import dev.kord.core.Kord
 import dev.kord.rest.builder.message.EmbedBuilder
 
 suspend fun EmbedBuilder.withApplicationThumbnail(kord: Kord) {
-    when (val url = getApplicationAvatarUrl(kord)) {
+    when (val cdnUrl = getApplicationAvatarUrl(kord)) {
         null -> return
         else -> thumbnail {
-            this.url = url
+            this.url = cdnUrl.toUrl()
         }
     }
 }

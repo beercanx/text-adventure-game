@@ -23,6 +23,6 @@ dependencies {
     api(libs.typesafe.config)
     api(libs.kotlinx.serialization.hocon)
 
-    // Coroutines - Aligns to the version brought in by "dev.kord:kord-core:0.8.0-M17"
+    // Coroutines
     api(libs.kotlinx.coroutines.core)
 }

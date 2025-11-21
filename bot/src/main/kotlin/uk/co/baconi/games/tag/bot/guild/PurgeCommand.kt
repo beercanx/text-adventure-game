@@ -7,7 +7,7 @@ import dev.kord.core.entity.Guild
 import dev.kord.core.entity.application.GuildChatInputCommand
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
-import dev.kord.rest.builder.message.modify.embed
+import dev.kord.rest.builder.message.embed
 import dev.kord.x.emoji.Emojis
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

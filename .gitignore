@@ -9,6 +9,9 @@ build/
 *.iml
 out/
 
+# Kotlin
+.kotlin/
+
 # EnvFile
 .env
 

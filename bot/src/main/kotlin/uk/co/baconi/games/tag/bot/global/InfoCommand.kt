@@ -1,14 +1,17 @@
+@file:OptIn(ExperimentalTime::class)
+
 package uk.co.baconi.games.tag.bot.global
 
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.respondPublic
 import dev.kord.core.event.interaction.ChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
-import dev.kord.rest.builder.message.create.embed
+import dev.kord.rest.builder.message.embed
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.BotConfiguration
 import uk.co.baconi.games.tag.bot.discord.withApplicationThumbnail
+import kotlin.time.ExperimentalTime
 
 interface InfoCommand {
 
@@ -34,7 +37,7 @@ interface InfoCommand {
                     field {
                         inline = true
                         name = "Source"
-                        value = "[GitHub](https\\://github.com/beercan1989/text-adventure-game)"
+                        value = "[GitHub](https://github.com/beercanx/text-adventure-game)"
                     }
                     field {
                         inline = true
