@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 
 [libraries]
 typesafe-config = { module = "com.typesafe:config", version = "1.4.5" }
