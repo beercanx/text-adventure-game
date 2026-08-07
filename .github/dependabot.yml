@@ -9,6 +9,10 @@ updates:
     labels:
       - "github-actions"
       - "dependencies"
+    groups:
+      all-github-actions:
+        patterns:
+          - "*"
 
   # Maintain dependencies for Gradle
   - package-ecosystem: "gradle"
@@ -18,3 +22,12 @@ updates:
     labels:
       - "gradle"
       - "dependencies"
+    groups:
+      security-updates-gradle-dependencies:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      version-updates-gradle-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
