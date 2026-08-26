@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.first
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.guild.SetupService.Companion.GAME_DISPLAY_NAME
+import uk.co.baconi.games.tag.bot.guild.SetupService.Companion.GAME_ENTRY_POINT
 import uk.co.baconi.games.tag.engine.Room
 
 private const val JOIN = "join"
@@ -60,7 +61,7 @@ interface JoinCommand {
     private suspend fun getGameRole(guild: GuildBehavior): List<Role> {
         return listOf(
             guild.roles.first { it.name == GAME_DISPLAY_NAME },
-            guild.roles.first { it.name == "${GAME_DISPLAY_NAME}: ${Room.FrontPath.displayName}" }
+            guild.roles.first { it.name == "${GAME_DISPLAY_NAME}: $GAME_ENTRY_POINT" }
         )
     }
 }

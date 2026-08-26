@@ -1,5 +1,6 @@
 package uk.co.baconi.games.tag.bot.guild
 
+import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.GuildBehavior
 import dev.kord.core.entity.User
 import dev.kord.core.entity.channel.Category
@@ -8,8 +9,9 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onEach
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.bot.guild.SetupService.Companion.GAME_DISPLAY_NAME
+import uk.co.baconi.games.tag.engine.GameEngine
 
-class PurgeService(private val guildService: GuildService) {
+class PurgeService(private val guildService: GuildService, private val gameEngine: GameEngine<Snowflake>) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(PurgeService::class.java)
@@ -27,6 +29,8 @@ class PurgeService(private val guildService: GuildService) {
         }
 
         removeVerbCommands(guild)
+
+        gameEngine.end(guild.id)
     }
 
     private suspend fun removeChannels(category: Category?, reason: String) {

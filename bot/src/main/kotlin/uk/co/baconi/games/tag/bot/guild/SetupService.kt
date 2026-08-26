@@ -21,11 +21,15 @@ import kotlinx.coroutines.flow.toList
 import org.slf4j.LoggerFactory
 import uk.co.baconi.games.tag.engine.GameEngine
 import uk.co.baconi.games.tag.engine.Room
+import uk.co.baconi.games.tag.engine.RoomId
+import uk.co.baconi.games.tag.engine.Verb
+import kotlin.enums.enumEntries
 
 class SetupService(private val guildService: GuildService, private val gameEngine: GameEngine<Snowflake>) {
 
     companion object {
-        const val GAME_DISPLAY_NAME = "Game"
+        const val GAME_DISPLAY_NAME = "Game" // TODO - Move into configuration
+        const val GAME_ENTRY_POINT = "front-path" // TODO - Move into configuration
         private val logger = LoggerFactory.getLogger(SetupService::class.java)
     }
 
@@ -35,7 +39,6 @@ class SetupService(private val guildService: GuildService, private val gameEngin
         // TODO - Create welcome to game channel
         manageChannels(guild, category, rooms)
         removeUnaffiliatedChannels(guild, category, rooms)
-        manageVerbCommands(guild)
     }
 
     private suspend fun manageCategory(guild: GuildBehavior): Category {
@@ -80,11 +83,11 @@ class SetupService(private val guildService: GuildService, private val gameEngin
         }
     }
 
-    private suspend fun getRooms(guild: GuildBehavior): Set<Room> {
+    private suspend fun getRooms(guild: GuildBehavior): Set<RoomId> {
         return gameEngine.start(guild.id).data.keys
     }
 
-    private suspend fun manageChannels(guild: GuildBehavior, category: Category, rooms: Set<Room>): List<TextChannel> {
+    private suspend fun manageChannels(guild: GuildBehavior, category: Category, rooms: Set<RoomId>): List<TextChannel> {
 
         val channels = category.channels
             .filterIsInstance<TextChannel>()
@@ -92,7 +95,7 @@ class SetupService(private val guildService: GuildService, private val gameEngin
 
         return rooms.map { room ->
 
-            when (val channel = channels.firstOrNull { it.name == room.displayName }) {
+            when (val channel = channels.firstOrNull { it.name == room.id }) {
 
                 null -> createChannel(guild, category, room).also {
                     logger.debug("Channel '{}' created under '{}' in '{}'", it.name, category.name, guild.id)
@@ -105,22 +108,18 @@ class SetupService(private val guildService: GuildService, private val gameEngin
         }
     }
 
-    private suspend fun createChannel(guild: GuildBehavior, category: Category, room: Room): TextChannel {
+    private suspend fun createChannel(guild: GuildBehavior, category: Category, room: RoomId): TextChannel {
 
-        val roomRole = manageRole(guild, "${category.name}: ${room.displayName}")
+        val roomRole = manageRole(guild, "${category.name}: ${room.id}")
 
-        return category.createTextChannel(room.displayName) {
+        return category.createTextChannel(room.id) {
             addRoleOverwrite(guild.id) { denied = Permissions(ViewChannel) }
             addRoleOverwrite(roomRole.id) { allowed = Permissions(ViewChannel) }
             addRoleOverwrite(getBotRole(guild).id) { allowed = Permissions(ViewChannel) }
         }
     }
 
-    private suspend fun removeUnaffiliatedChannels(guild: GuildBehavior, category: CategoryBehavior, rooms: Set<Room>) {
-        // TODO
-    }
-
-    private suspend fun manageVerbCommands(guild: GuildBehavior) {
+    private suspend fun removeUnaffiliatedChannels(guild: GuildBehavior, category: CategoryBehavior, rooms: Set<RoomId>) {
         // TODO
     }
 

@@ -5,14 +5,19 @@ package uk.co.baconi.games.tag.engine
 //  https://docs.textadventures.co.uk/quest/tutorial/interacting_with_objects.html
 //
 enum class Verb {
-    // Common
     Look,
+    Examine,
+    Walk,
+    Push,
+    Pull,
+
+    // Common
     // TODO - Take,
     // TODO - Drop,
     // TODO - Examine,
     // TODO - Search,
     // TODO - Inventory,
-    Open,
+    // TODO - Open,
     // TODO - Close,
     // TODO - Lock,
     // TODO - Unlock,
@@ -49,7 +54,6 @@ enum class Verb {
     // TODO - Knock,
     // TODO - Listen,
     // TODO - Move,
-    // TODO - Pull,
     // TODO - Remove,
     // TODO - Read,
     // TODO - Sit,

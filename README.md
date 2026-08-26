@@ -22,6 +22,11 @@ In the datastore module you'll find all the logic about persisting data.
 
 In the engine module you'll find all the game engine, which is decoupled from the game UI as much as possible.
 
+The game layout is defined via configuration, with the default layout set in [engine/src/main/resources/reference.conf](engine/src/main/resources/reference.conf)
+
+> [!WARNING]  
+> An LLM has been used to generate the layout descriptions, as the developer isn't creative.
+
 ### Bot
 
 In the bot module you'll find all the integrations with Discord from setting up the game to handling user interactions.

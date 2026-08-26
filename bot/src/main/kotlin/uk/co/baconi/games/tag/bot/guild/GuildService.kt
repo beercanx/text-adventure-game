@@ -36,7 +36,8 @@ class GuildService(private val kord: Kord, private val helpService: HelpService)
     suspend fun createCommandDefinition(
         guild: GuildBehavior,
         name: String,
-        description: String, builder: ChatInputCreateBuilder.() -> Unit = {}
+        description: String,
+        builder: ChatInputCreateBuilder.() -> Unit = {},
     ): GuildChatInputCommand {
 
         val definition = findCommandDefinition(guild, name)

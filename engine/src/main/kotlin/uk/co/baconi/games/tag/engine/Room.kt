@@ -2,39 +2,12 @@ package uk.co.baconi.games.tag.engine
 
 import kotlinx.serialization.Serializable
 
+@JvmInline
 @Serializable
-enum class Room(val displayName: String) {
-    FrontPath("front-path"),
-    Drive("drive"),
-    Garage("garage"),
-    Porch("porch"),
-    Hallway("hallway"),
-    Dining("dining"),
-    Kitchen("kitchen"),
-    Pantry("pantry"),
-    BackPassage("back-passage"),
-    Utility("utility"),
-    Yard("yard"),
-    Garden("garden"),
-    ToolShed("tool-shed"),
-    CoalShed("coal-shed"),
-    SummerHouse("summer-house"),
-    TreeHouse("tree-house"),
-    GreenHouse("green-house"),
-    VeggiePatch("veggie-patch"),
-    Field("field"),
-    UnderTheStairs("under-the-stairs"),
-    Lounge("lounge"),
-    Conservatory("conservatory"),
-    ChimneyStack("chimney-stack"),
-    StairCase("staircase"),
-    Landing("landing"),
-    FirstBedroom("first-bedroom"),
-    SecondBedroom("second-bedroom"),
-    Toilet("toilet"),
-    Bathroom("bathroom"),
-    Attic("attic"),
-    Roof("roof"),
-    ThirdBedroom("third-bedroom"),
-    FourthBedroom("fourth-bedroom"),
-}
+value class RoomId(val id: String)
+
+@Serializable
+data class RoomConnection(val to: RoomId, val via: ItemId, val action: Verb)
+
+@Serializable
+data class Room(val description: String, val items: Map<ItemId, Item>, val connections: List<RoomConnection>)

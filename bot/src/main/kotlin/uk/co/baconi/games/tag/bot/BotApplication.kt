@@ -22,7 +22,7 @@ class BotApplication(
     override val globalService = GlobalService(kord, helpService)
     override val guildService = GuildService(kord, helpService)
     override val setupService = SetupService(guildService, gameEngine)
-    override val purgeService = PurgeService(guildService)
+    override val purgeService = PurgeService(guildService, gameEngine)
 
     companion object {
 

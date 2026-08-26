@@ -5,7 +5,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 private val logger: Logger
-    get() = LoggerFactory.getLogger("uk.co.baconi.games.tag.bot.discord.getBotAvatar")
+    get() = LoggerFactory.getLogger("uk.co.baconi.games.tag.bot.discord.getApplicationAvatarUrl")
 
 // TODO - Review this later
 suspend fun getApplicationAvatarUrl(kord: Kord) = runCatching {
